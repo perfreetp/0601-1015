@@ -61,8 +61,10 @@ export interface ChatSession {
 
 export interface Booking {
   id: string;
-  demandId: string;
-  demandTitle: string;
+  demandId?: string;
+  demandTitle?: string;
+  skillId?: string;
+  skillTitle?: string;
   partnerId: string;
   partnerName: string;
   partnerAvatar: string;

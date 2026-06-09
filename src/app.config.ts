@@ -10,7 +10,9 @@ export default defineAppConfig({
     'pages/admin/index',
     'pages/publish-demand/index',
     'pages/edit-skill/index',
-    'pages/reschedule/index'
+    'pages/reschedule/index',
+    'pages/create-booking/index',
+    'pages/demand-detail/index'
   ],
   window: {
     backgroundTextStyle: 'light',

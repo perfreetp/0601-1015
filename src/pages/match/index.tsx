@@ -120,7 +120,9 @@ const MatchPage: React.FC = () => {
 
   const handleBook = (item: MatchItem) => {
     console.log('[Match] Book skill:', item.skill.id);
-    Taro.showToast({ title: `预约 ${item.skill.title}`, icon: 'none' });
+    Taro.navigateTo({
+      url: `/pages/create-booking/index?sId=${item.skill.id}&title=${encodeURIComponent(item.skill.title)}&pId=${item.user.id}&pName=${encodeURIComponent(item.user.name)}&pAvatar=${encodeURIComponent(item.user.avatar)}&loc=${encodeURIComponent('阳光花园小区')}`
+    });
   };
 
   const handleView = (item: MatchItem) => {

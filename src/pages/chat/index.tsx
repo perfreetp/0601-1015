@@ -1,29 +1,49 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Input, ScrollView, Image } from '@tarojs/components';
-import Taro, { useDidShow } from '@tarojs/taro';
+import Taro, { useDidShow, useRouter } from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import UserAvatar from '@/components/UserAvatar';
 import EmptyState from '@/components/EmptyState';
-import { mockChatSessions } from '@/data/messages';
 import { currentUser } from '@/data/users';
 import { useAppStore } from '@/store';
 import type { ChatSession, ChatMessage } from '@/types';
 
 const ChatPage: React.FC = () => {
-  const [sessions] = useState<ChatSession[]>(mockChatSessions);
+  const router = useRouter();
+  const urlSessionId = router.params?.sessionId as string | undefined;
+  const urlUserId = router.params?.userId as string | undefined;
+  const urlUserName = decodeURIComponent((router.params?.userName) as string || '');
+  const urlUserAvatar = decodeURIComponent((router.params?.userAvatar) as string || '');
+
+  const sessions = useAppStore(state => state.sessions);
+  const addMessage = useAppStore(state => state.addMessage);
+  const getSessionMessages = useAppStore(state => state.getSessionMessages);
+  const getOrCreateSession = useAppStore(state => state.getOrCreateSession);
+
   const [activeSession, setActiveSession] = useState<ChatSession | null>(null);
   const [inputText, setInputText] = useState('');
   const scrollRef = useRef<any>(null);
-
-  const addMessage = useAppStore(state => state.addMessage);
-  const getSessionMessages = useAppStore(state => state.getSessionMessages);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
+  useEffect(() => {
+    if (urlSessionId && urlUserId && urlUserName) {
+      const session = getOrCreateSession(urlSessionId, urlUserId, urlUserName, urlUserAvatar || '');
+      setActiveSession(session);
+    } else {
+      setActiveSession(null);
+    }
+  }, [urlSessionId, urlUserId, urlUserName, urlUserAvatar, getOrCreateSession]);
+
   useDidShow(() => {
-    if (activeSession) {
-      const msgs = getSessionMessages(activeSession.id);
+    if (urlSessionId && urlUserId && urlUserName) {
+      const session = getOrCreateSession(urlSessionId, urlUserId, urlUserName, urlUserAvatar || '');
+      setActiveSession(session);
+      const msgs = getSessionMessages(session.id);
       setMessages(msgs.length > 0 ? msgs : []);
+    } else {
+      setActiveSession(null);
+      setMessages([]);
     }
   });
 
@@ -47,10 +67,20 @@ const ChatPage: React.FC = () => {
   const handleSessionClick = (session: ChatSession) => {
     console.log('[Chat] 打开会话:', session.id);
     setActiveSession(session);
+    const msgs = getSessionMessages(session.id);
+    setMessages(msgs.length > 0 ? msgs : []);
   };
 
   const handleBack = () => {
-    setActiveSession(null);
+    if (urlSessionId) {
+      Taro.navigateBack({ delta: 1 }).catch(() => {
+        setActiveSession(null);
+        setMessages([]);
+      });
+    } else {
+      setActiveSession(null);
+      setMessages([]);
+    }
   };
 
   const sessionId = activeSession?.id || '';

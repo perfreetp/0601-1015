@@ -49,7 +49,7 @@ const BookingPage: React.FC = () => {
     console.log('[Booking] 取消预约:', booking.id);
     Taro.showModal({
       title: '确认取消',
-      content: `确定要取消「${booking.demandTitle}」的预约吗？`,
+      content: `确定要取消「${booking.demandTitle || booking.skillTitle}」的预约吗？`,
       success: (res) => {
         if (res.confirm) {
           updateBookingStatus(booking.id, 'cancelled');
@@ -62,7 +62,7 @@ const BookingPage: React.FC = () => {
   const handleReschedule = (booking: Booking) => {
     console.log('[Booking] 改期预约:', booking.id);
     Taro.navigateTo({
-      url: `/pages/reschedule/index?id=${booking.id}&title=${encodeURIComponent(booking.demandTitle)}&date=${booking.date}&slot=${encodeURIComponent(booking.timeSlot)}`
+      url: `/pages/reschedule/index?id=${booking.id}&title=${encodeURIComponent(booking.demandTitle || booking.skillTitle)}&date=${booking.date}&slot=${encodeURIComponent(booking.timeSlot)}`
     });
   };
 
@@ -91,7 +91,7 @@ const BookingPage: React.FC = () => {
           <View className={styles.reminderContent}>
             <Text className={styles.reminderTitle}>预约提醒</Text>
             <Text className={styles.reminderText}>
-              你与{upcomingBooking.partnerName}的「{upcomingBooking.demandTitle}」
+              你与{upcomingBooking.partnerName}的「{upcomingBooking.demandTitle || upcomingBooking.skillTitle}」
               预约将于 {upcomingBooking.date} {upcomingBooking.timeSlot} 进行
             </Text>
           </View>
@@ -136,7 +136,7 @@ const BookingPage: React.FC = () => {
                   </View>
                 </View>
 
-                <Text className={styles.bookingTitle}>{booking.demandTitle}</Text>
+                <Text className={styles.bookingTitle}>{booking.demandTitle || booking.skillTitle}</Text>
 
                 <View className={styles.bookingInfo}>
                   <View className={styles.bookingInfoRow}>

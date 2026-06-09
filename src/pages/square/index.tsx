@@ -68,7 +68,7 @@ const SquarePage: React.FC = () => {
 
   const handleDemandClick = (demand: Demand) => {
     console.log('[Square] Click demand:', demand.id, demand.title);
-    Taro.showToast({ title: '需求详情开发中', icon: 'none' });
+    Taro.navigateTo({ url: `/pages/demand-detail/index?id=${demand.id}` });
   };
 
   return (
