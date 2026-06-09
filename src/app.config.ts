@@ -12,7 +12,9 @@ export default defineAppConfig({
     'pages/edit-skill/index',
     'pages/reschedule/index',
     'pages/create-booking/index',
-    'pages/demand-detail/index'
+    'pages/demand-detail/index',
+    'pages/booking-detail/index',
+    'pages/review-thanks/index'
   ],
   window: {
     backgroundTextStyle: 'light',

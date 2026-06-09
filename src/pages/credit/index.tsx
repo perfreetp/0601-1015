@@ -4,11 +4,18 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import UserAvatar from '@/components/UserAvatar';
-import { currentUser } from '@/data/users';
-import { mockReviews, mockThankCards, mockDisputes } from '@/data/bookings';
+import { mockDisputes } from '@/data/bookings';
+import { useAppStore } from '@/store';
 import type { Review, ThankCard, Dispute } from '@/types';
 
 const CreditPage: React.FC = () => {
+  const reviews = useAppStore(state => state.reviews);
+  const thankCards = useAppStore(state => state.thankCards);
+  const creditScore = useAppStore(state => state.creditScore);
+  const completedCount = useAppStore(state => state.completedCount);
+  const averageRating = useAppStore(state => state.averageRating);
+  const totalPoints = useAppStore(state => state.totalPoints);
+
   const getCreditLevel = (score: number): string => {
     if (score >= 95) return '⭐ 优秀邻居';
     if (score >= 85) return '👍 信任邻居';
@@ -45,26 +52,30 @@ const CreditPage: React.FC = () => {
         <View className={styles.creditScoreCard}>
           <Text className={styles.creditScoreLabel}>我的信用分</Text>
           <View>
-            <Text className={styles.creditScoreValue}>{currentUser.creditScore}</Text>
+            <Text className={styles.creditScoreValue}>{creditScore}</Text>
           </View>
           <View className={styles.creditScoreLevel}>
             <Text className={styles.creditScoreLevelText}>
-              {getCreditLevel(currentUser.creditScore)}
+              {getCreditLevel(creditScore)}
             </Text>
           </View>
 
           <View className={styles.creditStats}>
             <View className={styles.creditStatItem}>
-              <Text className={styles.creditStatValue}>{currentUser.completedCount}</Text>
+              <Text className={styles.creditStatValue}>{completedCount}</Text>
               <Text className={styles.creditStatLabel}>完成次数</Text>
             </View>
             <View className={styles.creditStatItem}>
-              <Text className={styles.creditStatValue}>{currentUser.rating}</Text>
+              <Text className={styles.creditStatValue}>{averageRating}</Text>
               <Text className={styles.creditStatLabel}>综合评分</Text>
             </View>
             <View className={styles.creditStatItem}>
-              <Text className={styles.creditStatValue}>{mockThankCards.length}</Text>
+              <Text className={styles.creditStatValue}>{thankCards.length}</Text>
               <Text className={styles.creditStatLabel}>感谢卡</Text>
+            </View>
+            <View className={styles.creditStatItem}>
+              <Text className={styles.creditStatValue}>{totalPoints}</Text>
+              <Text className={styles.creditStatLabel}>积分</Text>
             </View>
           </View>
         </View>
@@ -78,7 +89,7 @@ const CreditPage: React.FC = () => {
               查看全部 ›
             </Text>
           </View>
-          {mockReviews.slice(0, 3).map((review: Review) => (
+          {reviews.slice(0, 3).map((review: Review) => (
             <View key={review.id} className={styles.reviewCard}>
               <View className={styles.reviewHeader}>
                 <UserAvatar src={review.fromUserAvatar} size="sm" />
@@ -100,7 +111,7 @@ const CreditPage: React.FC = () => {
               查看全部 ›
             </Text>
           </View>
-          {mockThankCards.map((card: ThankCard) => (
+          {thankCards.map((card: ThankCard) => (
             <View key={card.id} className={styles.thanksCard}>
               <View className={styles.thanksHeader}>
                 <UserAvatar src={card.fromUserAvatar} size="sm" />

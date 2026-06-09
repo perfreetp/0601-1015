@@ -74,13 +74,14 @@ const BookingPage: React.FC = () => {
 
   const handleComplete = (booking: Booking) => {
     console.log('[Booking] 完成预约:', booking.id);
-    updateBookingStatus(booking.id, 'completed');
-    Taro.showToast({ title: '感谢互评！', icon: 'success' });
+    Taro.navigateTo({ url: `/pages/review-thanks/index?id=${booking.id}` });
   };
 
   const handleContact = (booking: Booking) => {
     console.log('[Booking] 联系对方:', booking.partnerId);
-    Taro.switchTab({ url: '/pages/chat/index' });
+    Taro.navigateTo({
+      url: `/pages/chat/index?sessionId=c_${booking.partnerId}&userId=${booking.partnerId}&userName=${encodeURIComponent(booking.partnerName)}&userAvatar=${encodeURIComponent(booking.partnerAvatar)}`
+    });
   };
 
   return (
@@ -114,10 +115,14 @@ const BookingPage: React.FC = () => {
         {filteredBookings.length > 0 ? (
           filteredBookings.map(booking => {
             const statusInfo = formatStatus(booking.status);
-            const showActions = booking.status !== 'completed' && booking.status !== 'cancelled';
+            const showActions = booking.status !== 'cancelled';
 
             return (
-              <View key={booking.id} className={styles.bookingCard}>
+              <View
+                key={booking.id}
+                className={styles.bookingCard}
+                onClick={() => Taro.navigateTo({ url: `/pages/booking-detail/index?id=${booking.id}` })}
+              >
                 <View className={styles.bookingHeader}>
                   <View className={styles.bookingUserInfo}>
                     <UserAvatar src={booking.partnerAvatar} size="sm" />
@@ -170,13 +175,13 @@ const BookingPage: React.FC = () => {
                       <>
                         <View
                           className={classnames(styles.actionBtn, styles.secondary)}
-                          onClick={() => handleCancel(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleCancel(booking); }}
                         >
                           <Text>取消</Text>
                         </View>
                         <View
                           className={classnames(styles.actionBtn, styles.primary)}
-                          onClick={() => handleConfirm(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleConfirm(booking); }}
                         >
                           <Text>确认预约</Text>
                         </View>
@@ -186,19 +191,19 @@ const BookingPage: React.FC = () => {
                       <>
                         <View
                           className={classnames(styles.actionBtn, styles.error)}
-                          onClick={() => handleCancel(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleCancel(booking); }}
                         >
                           <Text>取消预约</Text>
                         </View>
                         <View
                           className={classnames(styles.actionBtn, styles.warning)}
-                          onClick={() => handleReschedule(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleReschedule(booking); }}
                         >
                           <Text>申请改期</Text>
                         </View>
                         <View
                           className={classnames(styles.actionBtn, styles.primary)}
-                          onClick={() => handleContact(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleContact(booking); }}
                         >
                           <Text>联系对方</Text>
                         </View>
@@ -208,19 +213,19 @@ const BookingPage: React.FC = () => {
                       <>
                         <View
                           className={classnames(styles.actionBtn, styles.error)}
-                          onClick={() => handleCancel(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleCancel(booking); }}
                         >
                           <Text>取消预约</Text>
                         </View>
                         <View
                           className={classnames(styles.actionBtn, styles.warning)}
-                          onClick={() => handleReschedule(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleReschedule(booking); }}
                         >
                           <Text>再次改期</Text>
                         </View>
                         <View
                           className={classnames(styles.actionBtn, styles.primary)}
-                          onClick={() => handleContact(booking)}
+                          onClick={(e) => { e.stopPropagation(); handleContact(booking); }}
                         >
                           <Text>联系对方</Text>
                         </View>
@@ -229,7 +234,7 @@ const BookingPage: React.FC = () => {
                     {booking.status === 'completed' && (
                       <View
                         className={classnames(styles.actionBtn, styles.primary)}
-                        onClick={() => handleComplete(booking)}
+                        onClick={(e) => { e.stopPropagation(); handleComplete(booking); }}
                       >
                         <Text>去评价</Text>
                       </View>

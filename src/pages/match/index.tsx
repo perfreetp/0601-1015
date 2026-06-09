@@ -115,7 +115,9 @@ const MatchPage: React.FC = () => {
 
   const handleContact = (item: MatchItem) => {
     console.log('[Match] Contact user:', item.user.id);
-    Taro.showToast({ title: `联系 ${item.user.name}`, icon: 'none' });
+    Taro.navigateTo({
+      url: `/pages/chat/index?sessionId=c_${item.user.id}&userId=${item.user.id}&userName=${encodeURIComponent(item.user.name)}&userAvatar=${encodeURIComponent(item.user.avatar)}`
+    });
   };
 
   const handleBook = (item: MatchItem) => {

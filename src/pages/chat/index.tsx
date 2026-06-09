@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { View, Text, Input, ScrollView, Image } from '@tarojs/components';
 import Taro, { useDidShow, useRouter } from '@tarojs/taro';
 import styles from './index.module.scss';
@@ -17,9 +17,13 @@ const ChatPage: React.FC = () => {
   const urlUserAvatar = decodeURIComponent((router.params?.userAvatar) as string || '');
 
   const sessions = useAppStore(state => state.sessions);
+  const clearSessionUnread = useAppStore(state => state.clearSessionUnread);
+  const getSortedSessions = useAppStore(state => state.getSortedSessions);
   const addMessage = useAppStore(state => state.addMessage);
   const getSessionMessages = useAppStore(state => state.getSessionMessages);
   const getOrCreateSession = useAppStore(state => state.getOrCreateSession);
+
+  const sortedSessions = useMemo(() => getSortedSessions(), [sessions, getSortedSessions]);
 
   const [activeSession, setActiveSession] = useState<ChatSession | null>(null);
   const [inputText, setInputText] = useState('');
@@ -30,15 +34,17 @@ const ChatPage: React.FC = () => {
     if (urlSessionId && urlUserId && urlUserName) {
       const session = getOrCreateSession(urlSessionId, urlUserId, urlUserName, urlUserAvatar || '');
       setActiveSession(session);
+      clearSessionUnread(session.id);
     } else {
       setActiveSession(null);
     }
-  }, [urlSessionId, urlUserId, urlUserName, urlUserAvatar, getOrCreateSession]);
+  }, [urlSessionId, urlUserId, urlUserName, urlUserAvatar, getOrCreateSession, clearSessionUnread]);
 
   useDidShow(() => {
     if (urlSessionId && urlUserId && urlUserName) {
       const session = getOrCreateSession(urlSessionId, urlUserId, urlUserName, urlUserAvatar || '');
       setActiveSession(session);
+      clearSessionUnread(session.id);
       const msgs = getSessionMessages(session.id);
       setMessages(msgs.length > 0 ? msgs : []);
     } else {
@@ -67,6 +73,7 @@ const ChatPage: React.FC = () => {
   const handleSessionClick = (session: ChatSession) => {
     console.log('[Chat] 打开会话:', session.id);
     setActiveSession(session);
+    clearSessionUnread(session.id);
     const msgs = getSessionMessages(session.id);
     setMessages(msgs.length > 0 ? msgs : []);
   };
@@ -301,8 +308,8 @@ const ChatPage: React.FC = () => {
   return (
     <View className={styles.page}>
       <ScrollView className={styles.listView} scrollY enhanced showScrollbar={false}>
-        {sessions.length > 0 ? (
-          sessions.map(session => (
+        {sortedSessions.length > 0 ? (
+          sortedSessions.map(session => (
             <View
               key={session.id}
               className={styles.sessionItem}

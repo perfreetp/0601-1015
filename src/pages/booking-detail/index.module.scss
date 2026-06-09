@@ -1,0 +1,384 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+.userCard {
+  margin: $spacing-lg $page-padding;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.userInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.userNameRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.userName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.userMeta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-top: $spacing-xs;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.metaIcon {
+  font-size: $font-size-sm;
+}
+
+.creditBadge {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 4rpx $spacing-sm;
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border-radius: $radius-round;
+}
+
+.creditIcon {
+  font-size: $font-size-xs;
+}
+
+.creditText {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: #92400E;
+}
+
+.infoCard {
+  margin: 0 $page-padding $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  padding: $spacing-md 0;
+  border-bottom: 2rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.infoIcon {
+  font-size: $font-size-lg;
+  margin-right: $spacing-sm;
+  flex-shrink: 0;
+  width: 40rpx;
+  text-align: center;
+}
+
+.infoContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+}
+
+.infoTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.timeline {
+  margin: 0 $page-padding $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.timelineTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+}
+
+.timelineItem {
+  display: flex;
+  gap: $spacing-md;
+  padding-bottom: $spacing-lg;
+  position: relative;
+
+  &:last-child {
+    padding-bottom: 0;
+
+    .timelineLine {
+      display: none;
+    }
+  }
+}
+
+.timelineNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 40rpx;
+  flex-shrink: 0;
+}
+
+.timelineDot {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background: $color-divider;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+  transition: all $transition-base;
+
+  .done & {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  }
+
+  .active & {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    box-shadow: 0 0 0 8rpx rgba(34, 197, 94, 0.15);
+  }
+}
+
+.timelineDotIcon {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+
+  .done &,
+  .active & {
+    color: $color-text-white;
+  }
+}
+
+.timelineLine {
+  position: absolute;
+  top: 48rpx;
+  bottom: 0;
+  width: 4rpx;
+  background: $color-divider;
+
+  .done & {
+    background: linear-gradient(180deg, $color-primary 0%, $color-primary-light 100%);
+  }
+}
+
+.timelineContent {
+  flex: 1;
+  padding-bottom: $spacing-xs;
+}
+
+.timelineLabel {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  .done & {
+    color: $color-text-secondary;
+  }
+
+  .active & {
+    color: $color-text-primary;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.timelineDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.actionBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: $spacing-md;
+}
+
+.contactBtn {
+  flex: 1;
+  height: $button-height-lg;
+  background: $color-divider;
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  transition: all $transition-base;
+
+  &:active {
+    background: $color-border;
+    transform: scale(0.97);
+  }
+}
+
+.contactBtnIcon {
+  font-size: $font-size-lg;
+}
+
+.contactBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.primaryBtn {
+  flex: 1;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  transition: all $transition-base;
+  box-shadow: 0 4rpx 16rpx rgba(34, 197, 94, 0.3);
+
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+}
+
+.primaryBtnIcon {
+  font-size: $font-size-lg;
+}
+
+.primaryBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.secondaryBtn {
+  flex: 1;
+  height: $button-height-lg;
+  background: $color-divider;
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  transition: all $transition-base;
+
+  &:active {
+    background: $color-border;
+    transform: scale(0.97);
+  }
+}
+
+.secondaryBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+}
+
+.warningBtn {
+  flex: 1;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  transition: all $transition-base;
+  box-shadow: 0 4rpx 16rpx rgba(245, 158, 11, 0.3);
+
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+}
+
+.warningBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.dangerBtn {
+  flex: 1;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, #EF4444 0%, #F87171 100%);
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  transition: all $transition-base;
+  box-shadow: 0 4rpx 16rpx rgba(239, 68, 68, 0.3);
+
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+}
+
+.dangerBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.emptyContainer {
+  padding: $spacing-xl $page-padding;
+}
