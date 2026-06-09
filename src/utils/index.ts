@@ -2,6 +2,8 @@ export const formatDate = (dateStr: string): string => {
   return dateStr;
 };
 
+export { DEMAND_CATEGORIES } from '@/types';
+
 export const formatDistance = (distance: number): string => {
   if (distance < 1) {
     return `${Math.round(distance * 1000)}m`;
