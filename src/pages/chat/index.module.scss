@@ -1,0 +1,289 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+}
+
+.listView {
+  padding: 0 $page-padding;
+}
+
+.sessionItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-lg 0;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-sm;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+  position: relative;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.avatarWrapper {
+  position: relative;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  background: $color-error;
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10rpx;
+  z-index: 2;
+}
+
+.unreadText {
+  font-size: 22rpx;
+  color: $color-text-white;
+  font-weight: $font-weight-semibold;
+}
+
+.sessionContent {
+  flex: 1;
+  margin-left: $spacing-md;
+  min-width: 0;
+}
+
+.sessionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xs;
+}
+
+.sessionName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.sessionTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.sessionPreview {
+  display: flex;
+  align-items: center;
+}
+
+.previewText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.emptyTip {
+  padding: $spacing-xl * 3 $page-padding;
+}
+
+.chatView {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color-bg-page;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md $page-padding;
+  padding-top: calc(#{$spacing-md} + env(safe-area-inset-top));
+  background: $color-bg-card;
+  box-shadow: $shadow-float;
+}
+
+.backBtn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-round;
+  background: $color-divider;
+  margin-right: $spacing-sm;
+
+  &:active {
+    background: $color-border;
+  }
+}
+
+.backIcon {
+  font-size: 32rpx;
+}
+
+.chatUserInfo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.chatUserName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-left: $spacing-sm;
+}
+
+.moreBtn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-round;
+  background: $color-divider;
+
+  &:active {
+    background: $color-border;
+  }
+}
+
+.moreIcon {
+  font-size: 32rpx;
+}
+
+.messagesContainer {
+  flex: 1;
+  padding: $spacing-lg $page-padding;
+  overflow-y: auto;
+}
+
+.messageItem {
+  display: flex;
+  margin-bottom: $spacing-lg;
+
+  &.mine {
+    flex-direction: row-reverse;
+  }
+}
+
+.messageAvatar {
+  flex-shrink: 0;
+}
+
+.messageBubble {
+  max-width: 70%;
+  margin: 0 $spacing-sm;
+  padding: $spacing-md $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  position: relative;
+
+  .mine & {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  }
+}
+
+.messageText {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-loose;
+  word-break: break-all;
+
+  .mine & {
+    color: $color-text-white;
+  }
+}
+
+.messageTime {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+
+  .mine & {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.inputBar {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  gap: $spacing-sm;
+}
+
+.inputBtn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-divider;
+  border-radius: $radius-round;
+  flex-shrink: 0;
+
+  &:active {
+    background: $color-border;
+    transform: scale(0.95);
+  }
+}
+
+.inputBtnIcon {
+  font-size: 36rpx;
+}
+
+.inputWrapper {
+  flex: 1;
+  height: 72rpx;
+  background: $color-divider;
+  border-radius: $radius-button;
+  padding: 0 $spacing-lg;
+  display: flex;
+  align-items: center;
+}
+
+.inputField {
+  flex: 1;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.sendBtn {
+  height: 72rpx;
+  padding: 0 $spacing-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.96);
+    opacity: 0.9;
+  }
+}
+
+.sendBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}

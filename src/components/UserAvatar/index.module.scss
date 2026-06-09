@@ -1,0 +1,38 @@
+@use '@/styles/variables.scss' as *;
+
+.avatarContainer {
+  position: relative;
+  border-radius: $radius-round;
+  overflow: hidden;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  @include flex-center;
+  flex-shrink: 0;
+
+  &.sm {
+    width: 64rpx;
+    height: 64rpx;
+  }
+
+  &.md {
+    width: 88rpx;
+    height: 88rpx;
+  }
+
+  &.lg {
+    width: 128rpx;
+    height: 128rpx;
+  }
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.nameText {
+  position: absolute;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}

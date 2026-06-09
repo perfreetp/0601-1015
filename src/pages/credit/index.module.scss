@@ -1,0 +1,259 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+  padding: $spacing-xl $page-padding;
+  padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top));
+}
+
+.creditScoreCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  text-align: center;
+  box-shadow: $shadow-card;
+}
+
+.creditScoreLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-xs;
+}
+
+.creditScoreValue {
+  font-size: 80rpx;
+  font-weight: $font-weight-bold;
+  background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.creditScoreLevel {
+  display: inline-flex;
+  padding: $spacing-xs $spacing-md;
+  background: linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%);
+  border-radius: $radius-button;
+  margin-top: $spacing-sm;
+}
+
+.creditScoreLevelText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: #7C3AED;
+}
+
+.creditStats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 2rpx solid $color-divider;
+}
+
+.creditStatItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.creditStatValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.creditStatLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.section {
+  margin: $spacing-lg $page-padding 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sectionMore {
+  font-size: $font-size-sm;
+  color: $color-primary;
+}
+
+.reviewCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-sm;
+  box-shadow: $shadow-card;
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+}
+
+.reviewUserInfo {
+  flex: 1;
+  margin-left: $spacing-sm;
+}
+
+.reviewUserName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+}
+
+.reviewStar {
+  font-size: $font-size-sm;
+  color: #F59E0B;
+  margin-right: 4rpx;
+}
+
+.reviewDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.reviewContent {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+}
+
+.thanksCard {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-sm;
+  position: relative;
+  overflow: hidden;
+}
+
+.thanksCard::before {
+  content: '💝';
+  position: absolute;
+  top: -20rpx;
+  right: -10rpx;
+  font-size: 120rpx;
+  opacity: 0.15;
+}
+
+.thanksHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.thanksUserInfo {
+  flex: 1;
+  margin-left: $spacing-sm;
+}
+
+.thanksUserName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: #78350F;
+}
+
+.thanksPoints {
+  padding: $spacing-xs $spacing-md;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: $radius-button;
+}
+
+.thanksPointsText {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: #92400E;
+}
+
+.thanksMessage {
+  font-size: $font-size-sm;
+  color: #78350F;
+  line-height: $line-height-loose;
+  font-style: italic;
+}
+
+.thanksDate {
+  font-size: $font-size-xs;
+  color: #A16207;
+  margin-top: $spacing-sm;
+}
+
+.disputeCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-sm;
+  box-shadow: $shadow-card;
+  border-left: 6rpx solid;
+}
+
+.disputePending {
+  border-left-color: $color-warning;
+}
+
+.disputeResolved {
+  border-left-color: $color-success;
+}
+
+.disputeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.disputeTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  flex: 1;
+  @include text-ellipsis;
+}
+
+.disputeStatus {
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-sm;
+  margin-left: $spacing-sm;
+}
+
+.disputeStatusText {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.disputeDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  margin-bottom: $spacing-xs;
+}
+
+.disputeDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}

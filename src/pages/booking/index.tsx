@@ -1,0 +1,212 @@
+import React, { useState, useMemo } from 'react';
+import { View, Text, ScrollView } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import styles from './index.module.scss';
+import classnames from 'classnames';
+import UserAvatar from '@/components/UserAvatar';
+import EmptyState from '@/components/EmptyState';
+import { mockBookings } from '@/data/bookings';
+import type { Booking } from '@/types';
+import { formatStatus } from '@/utils';
+
+const BookingPage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<string>('全部');
+  const [bookings] = useState<Booking[]>(mockBookings);
+
+  const tabs = ['全部', '待确认', '已确认', '已完成'];
+
+  const filteredBookings = useMemo(() => {
+    if (activeTab === '全部') return bookings;
+    const statusMap: Record<string, string[]> = {
+      '待确认': ['pending'],
+      '已确认': ['confirmed', 'rescheduled'],
+      '已完成': ['completed', 'cancelled']
+    };
+    const statuses = statusMap[activeTab] || [];
+    return bookings.filter(b => statuses.includes(b.status));
+  }, [activeTab, bookings]);
+
+  const upcomingBooking = bookings.find(b =>
+    b.status === 'confirmed' || b.status === 'pending'
+  );
+
+  const handleCancel = (booking: Booking) => {
+    console.log('[Booking] 取消预约:', booking.id);
+    Taro.showModal({
+      title: '确认取消',
+      content: `确定要取消「${booking.demandTitle}」的预约吗？`,
+      success: (res) => {
+        if (res.confirm) {
+          Taro.showToast({ title: '预约已取消', icon: 'success' });
+        }
+      }
+    });
+  };
+
+  const handleReschedule = (booking: Booking) => {
+    console.log('[Booking] 改期预约:', booking.id);
+    Taro.showToast({ title: '改期功能开发中', icon: 'none' });
+  };
+
+  const handleConfirm = (booking: Booking) => {
+    console.log('[Booking] 确认预约:', booking.id);
+    Taro.showToast({ title: '预约已确认', icon: 'success' });
+  };
+
+  const handleComplete = (booking: Booking) => {
+    console.log('[Booking] 完成预约:', booking.id);
+    Taro.showToast({ title: '感谢互评！', icon: 'success' });
+  };
+
+  const handleContact = (booking: Booking) => {
+    console.log('[Booking] 联系对方:', booking.partnerId);
+    Taro.switchTab({ url: '/pages/chat/index' });
+  };
+
+  return (
+    <View className={styles.page}>
+      {upcomingBooking && (
+        <View className={styles.reminderBanner}>
+          <Text className={styles.reminderIcon}>⏰</Text>
+          <View className={styles.reminderContent}>
+            <Text className={styles.reminderTitle}>预约提醒</Text>
+            <Text className={styles.reminderText}>
+              你与{upcomingBooking.partnerName}的「{upcomingBooking.demandTitle}」
+              预约将于 {upcomingBooking.date} {upcomingBooking.timeSlot} 进行
+            </Text>
+          </View>
+        </View>
+      )}
+
+      <View className={styles.tabs}>
+        {tabs.map(tab => (
+          <View
+            key={tab}
+            className={classnames(styles.tabItem, activeTab === tab && styles.active)}
+            onClick={() => setActiveTab(tab)}
+          >
+            <Text>{tab}</Text>
+          </View>
+        ))}
+      </View>
+
+      <ScrollView scrollY enhanced showScrollbar={false}>
+        {filteredBookings.length > 0 ? (
+          filteredBookings.map(booking => {
+            const statusInfo = formatStatus(booking.status);
+            const showActions = booking.status !== 'completed' && booking.status !== 'cancelled';
+
+            return (
+              <View key={booking.id} className={styles.bookingCard}>
+                <View className={styles.bookingHeader}>
+                  <View className={styles.bookingUserInfo}>
+                    <UserAvatar src={booking.partnerAvatar} size="sm" />
+                    <Text className={styles.bookingUserName}>{booking.partnerName}</Text>
+                  </View>
+                  <View
+                    className={styles.bookingStatus}
+                    style={{ background: statusInfo.bg }}
+                  >
+                    <Text
+                      className={styles.bookingStatusText}
+                      style={{ color: statusInfo.color }}
+                    >
+                      {statusInfo.label}
+                    </Text>
+                  </View>
+                </View>
+
+                <Text className={styles.bookingTitle}>{booking.demandTitle}</Text>
+
+                <View className={styles.bookingInfo}>
+                  <View className={styles.bookingInfoRow}>
+                    <Text className={styles.bookingInfoIcon}>📅</Text>
+                    <View className={styles.bookingInfoContent}>
+                      <Text className={styles.bookingInfoLabel}>时间：</Text>
+                      <Text>{booking.date} {booking.timeSlot}</Text>
+                    </View>
+                  </View>
+                  <View className={styles.bookingInfoRow}>
+                    <Text className={styles.bookingInfoIcon}>📍</Text>
+                    <View className={styles.bookingInfoContent}>
+                      <Text className={styles.bookingInfoLabel}>地点：</Text>
+                      <Text>{booking.location}</Text>
+                    </View>
+                  </View>
+                  {booking.notes && (
+                    <View className={styles.bookingInfoRow}>
+                      <Text className={styles.bookingInfoIcon}>📝</Text>
+                      <View className={styles.bookingInfoContent}>
+                        <Text className={styles.bookingInfoLabel}>备注：</Text>
+                        <Text>{booking.notes}</Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+
+                {showActions && (
+                  <View className={styles.bookingActions}>
+                    {booking.status === 'pending' && (
+                      <>
+                        <View
+                          className={classnames(styles.actionBtn, styles.secondary)}
+                          onClick={() => handleCancel(booking)}
+                        >
+                          <Text>取消</Text>
+                        </View>
+                        <View
+                          className={classnames(styles.actionBtn, styles.primary)}
+                          onClick={() => handleConfirm(booking)}
+                        >
+                          <Text>确认预约</Text>
+                        </View>
+                      </>
+                    )}
+                    {booking.status === 'confirmed' && (
+                      <>
+                        <View
+                          className={classnames(styles.actionBtn, styles.error)}
+                          onClick={() => handleCancel(booking)}
+                        >
+                          <Text>取消预约</Text>
+                        </View>
+                        <View
+                          className={classnames(styles.actionBtn, styles.warning)}
+                          onClick={() => handleReschedule(booking)}
+                        >
+                          <Text>申请改期</Text>
+                        </View>
+                        <View
+                          className={classnames(styles.actionBtn, styles.primary)}
+                          onClick={() => handleContact(booking)}
+                        >
+                          <Text>联系对方</Text>
+                        </View>
+                      </>
+                    )}
+                    {booking.status === 'completed' && (
+                      <View
+                        className={classnames(styles.actionBtn, styles.primary)}
+                        onClick={() => handleComplete(booking)}
+                      >
+                        <Text>去评价</Text>
+                      </View>
+                    )}
+                  </View>
+                )}
+              </View>
+            );
+          })
+        ) : (
+          <EmptyState
+            icon="📋"
+            title={`暂无${activeTab === '全部' ? '' : activeTab}预约`}
+            description="去匹配页找找合适的邻居吧~"
+          />
+        )}
+      </ScrollView>
+    </View>
+  );
+};
+
+export default BookingPage;
