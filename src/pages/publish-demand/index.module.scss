@@ -1,0 +1,217 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  padding: $spacing-lg $page-padding 200rpx;
+  background: $color-bg-page;
+}
+
+.formCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.formItem {
+  margin-bottom: $spacing-lg;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.formLabel {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+  display: flex;
+  align-items: center;
+}
+
+.required {
+  color: $color-error;
+  margin-right: 4rpx;
+}
+
+.inputBox {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 $spacing-md;
+  background: $color-divider;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+}
+
+.inputField {
+  flex: 1;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.textareaBox {
+  width: 100%;
+  padding: $spacing-md;
+  background: $color-divider;
+  border-radius: $radius-md;
+}
+
+.textareaField {
+  width: 100%;
+  min-height: 200rpx;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-loose;
+}
+
+.categoryList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.categoryItem {
+  padding: $spacing-sm $spacing-lg;
+  background: $color-divider;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  transition: all $transition-fast;
+
+  &.active {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    color: $color-text-white;
+    font-weight: $font-weight-semibold;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.categoryEmoji {
+  margin-right: $spacing-xs;
+}
+
+.urgencyList {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.urgencyItem {
+  flex: 1;
+  padding: $spacing-md 0;
+  background: $color-divider;
+  border-radius: $radius-md;
+  text-align: center;
+  transition: all $transition-fast;
+
+  &.active {
+    box-shadow: 0 0 0 4rpx $color-primary inset;
+  }
+}
+
+.urgencyLabel {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  margin-bottom: 4rpx;
+}
+
+.urgencyDesc {
+  display: block;
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+}
+
+.budgetRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.budgetTypeList {
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+}
+
+.budgetTypeItem {
+  padding: $spacing-xs $spacing-md;
+  background: $color-divider;
+  border-radius: $radius-button;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  transition: all $transition-fast;
+
+  &.active {
+    background: $color-tag-bg;
+    color: $color-primary-dark;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: $spacing-md;
+}
+
+.cancelBtn {
+  flex: 1;
+  height: 88rpx;
+  background: $color-divider;
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+
+  &:active {
+    background: $color-border;
+    transform: scale(0.97);
+  }
+}
+
+.cancelBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+}
+
+.submitBtn {
+  flex: 2;
+  height: 88rpx;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+  box-shadow: 0 4rpx 16rpx rgba(34, 197, 94, 0.3);
+
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.submitBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}

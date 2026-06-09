@@ -1,17 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import UserAvatar from '@/components/UserAvatar';
 import EmptyState from '@/components/EmptyState';
-import { mockBookings } from '@/data/bookings';
+import { useAppStore } from '@/store';
 import type { Booking } from '@/types';
 import { formatStatus } from '@/utils';
 
 const BookingPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('全部');
-  const [bookings] = useState<Booking[]>(mockBookings);
+
+  const bookings = useAppStore(state => state.bookings);
+  const updateBookingStatus = useAppStore(state => state.updateBookingStatus);
+
+  useDidShow(() => {
+    console.log('[Booking] Page shown, total bookings:', bookings.length);
+  });
 
   const tabs = ['全部', '待确认', '已确认', '已完成'];
 
@@ -26,9 +32,18 @@ const BookingPage: React.FC = () => {
     return bookings.filter(b => statuses.includes(b.status));
   }, [activeTab, bookings]);
 
-  const upcomingBooking = bookings.find(b =>
-    b.status === 'confirmed' || b.status === 'pending'
-  );
+  const upcomingBooking = useMemo(() => {
+    const activeBookings = bookings.filter(b =>
+      b.status === 'confirmed' || b.status === 'pending' || b.status === 'rescheduled'
+    );
+    if (activeBookings.length === 0) return null;
+    activeBookings.sort((a, b) => {
+      const aTime = new Date(`${a.date} ${a.timeSlot.split(' ')[0]}`).getTime();
+      const bTime = new Date(`${b.date} ${b.timeSlot.split(' ')[0]}`).getTime();
+      return aTime - bTime;
+    });
+    return activeBookings[0];
+  }, [bookings]);
 
   const handleCancel = (booking: Booking) => {
     console.log('[Booking] 取消预约:', booking.id);
@@ -37,6 +52,7 @@ const BookingPage: React.FC = () => {
       content: `确定要取消「${booking.demandTitle}」的预约吗？`,
       success: (res) => {
         if (res.confirm) {
+          updateBookingStatus(booking.id, 'cancelled');
           Taro.showToast({ title: '预约已取消', icon: 'success' });
         }
       }
@@ -45,16 +61,20 @@ const BookingPage: React.FC = () => {
 
   const handleReschedule = (booking: Booking) => {
     console.log('[Booking] 改期预约:', booking.id);
-    Taro.showToast({ title: '改期功能开发中', icon: 'none' });
+    Taro.navigateTo({
+      url: `/pages/reschedule/index?id=${booking.id}&title=${encodeURIComponent(booking.demandTitle)}&date=${booking.date}&slot=${encodeURIComponent(booking.timeSlot)}`
+    });
   };
 
   const handleConfirm = (booking: Booking) => {
     console.log('[Booking] 确认预约:', booking.id);
+    updateBookingStatus(booking.id, 'confirmed');
     Taro.showToast({ title: '预约已确认', icon: 'success' });
   };
 
   const handleComplete = (booking: Booking) => {
     console.log('[Booking] 完成预约:', booking.id);
+    updateBookingStatus(booking.id, 'completed');
     Taro.showToast({ title: '感谢互评！', icon: 'success' });
   };
 
@@ -175,6 +195,28 @@ const BookingPage: React.FC = () => {
                           onClick={() => handleReschedule(booking)}
                         >
                           <Text>申请改期</Text>
+                        </View>
+                        <View
+                          className={classnames(styles.actionBtn, styles.primary)}
+                          onClick={() => handleContact(booking)}
+                        >
+                          <Text>联系对方</Text>
+                        </View>
+                      </>
+                    )}
+                    {booking.status === 'rescheduled' && (
+                      <>
+                        <View
+                          className={classnames(styles.actionBtn, styles.error)}
+                          onClick={() => handleCancel(booking)}
+                        >
+                          <Text>取消预约</Text>
+                        </View>
+                        <View
+                          className={classnames(styles.actionBtn, styles.warning)}
+                          onClick={() => handleReschedule(booking)}
+                        >
+                          <Text>再次改期</Text>
                         </View>
                         <View
                           className={classnames(styles.actionBtn, styles.primary)}

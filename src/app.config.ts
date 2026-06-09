@@ -7,7 +7,10 @@ export default defineAppConfig({
     'pages/mine/index',
     'pages/booking/index',
     'pages/credit/index',
-    'pages/admin/index'
+    'pages/admin/index',
+    'pages/publish-demand/index',
+    'pages/edit-skill/index',
+    'pages/reschedule/index'
   ],
   window: {
     backgroundTextStyle: 'light',

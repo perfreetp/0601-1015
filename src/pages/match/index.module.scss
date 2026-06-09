@@ -67,9 +67,9 @@
 
 .filterRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: $spacing-sm;
-  margin-bottom: $spacing-sm;
+  margin-bottom: $spacing-md;
 
   &:last-child {
     margin-bottom: 0;
@@ -81,6 +81,7 @@
   color: $color-text-secondary;
   width: 120rpx;
   flex-shrink: 0;
+  padding-top: 6rpx;
 }
 
 .filterOptions {
@@ -107,6 +108,69 @@
   &:active {
     transform: scale(0.95);
   }
+}
+
+.preferenceRow {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  padding-top: $spacing-md;
+  border-top: 2rpx solid $color-divider;
+}
+
+.preferenceLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  width: 120rpx;
+  flex-shrink: 0;
+  padding-top: 6rpx;
+}
+
+.preferenceOptions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.preferenceGroup {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.preferenceGroupTitle {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  width: 100rpx;
+  flex-shrink: 0;
+}
+
+.preferenceChip {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-md;
+  background: $color-divider;
+  border-radius: $radius-button;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  transition: all $transition-fast;
+
+  &.active {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    color: $color-text-white;
+    font-weight: $font-weight-semibold;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.preferenceCheck {
+  margin-right: 6rpx;
+  font-size: $font-size-xs;
 }
 
 .listSection {
@@ -283,4 +347,8 @@
     background: $color-divider;
     color: $color-text-secondary;
   }
+}
+
+.emptyTip {
+  padding: $spacing-xl * 2 0;
 }

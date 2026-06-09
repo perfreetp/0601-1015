@@ -1,18 +1,25 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Input, ScrollView } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import DemandCard from '@/components/DemandCard';
-import { mockDemands } from '@/data/demands';
 import { DEMAND_CATEGORIES, getCategoryEmoji } from '@/utils';
 import type { Demand } from '@/types';
+import { useAppStore } from '@/store';
 
 const SquarePage: React.FC = () => {
+  const storeDemands = useAppStore(state => state.demands);
+  
   const [searchText, setSearchText] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('全部');
   const [sortType, setSortType] = useState<'time' | 'distance'>('time');
-  const [demands] = useState<Demand[]>(mockDemands);
+  const [demands, setDemands] = useState<Demand[]>(storeDemands);
+
+  useDidShow(() => {
+    setDemands([...storeDemands]);
+    console.log('[Square] Page showed, loaded demands:', storeDemands.length);
+  });
 
   const categories = ['全部', ...DEMAND_CATEGORIES];
 
@@ -35,7 +42,11 @@ const SquarePage: React.FC = () => {
     if (sortType === 'distance') {
       result.sort((a, b) => a.distance - b.distance);
     } else {
-      result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      result.sort((a, b) => {
+        const timeA = new Date(a.createdAt.replace(' ', 'T')).getTime();
+        const timeB = new Date(b.createdAt.replace(' ', 'T')).getTime();
+        return timeB - timeA;
+      });
     }
 
     return result;
@@ -43,6 +54,7 @@ const SquarePage: React.FC = () => {
 
   const handleCategoryClick = (category: string) => {
     setActiveCategory(category);
+    console.log('[Square] Category changed:', category);
   };
 
   const handleSortToggle = () => {
@@ -50,21 +62,13 @@ const SquarePage: React.FC = () => {
   };
 
   const handlePublish = () => {
-    Taro.showToast({ title: '发布功能开发中', icon: 'none' });
-    console.log('[Square] 点击发布需求按钮');
+    console.log('[Square] Navigate to publish demand');
+    Taro.navigateTo({ url: '/pages/publish-demand/index' });
   };
 
   const handleDemandClick = (demand: Demand) => {
-    console.log('[Square] 点击需求:', demand.id, demand.title);
+    console.log('[Square] Click demand:', demand.id, demand.title);
     Taro.showToast({ title: '需求详情开发中', icon: 'none' });
-  };
-
-  const handleRefresh = () => {
-    console.log('[Square] 下拉刷新');
-    setTimeout(() => {
-      Taro.stopPullDownRefresh();
-      Taro.showToast({ title: '刷新成功', icon: 'none' });
-    }, 1000);
   };
 
   return (
@@ -80,6 +84,7 @@ const SquarePage: React.FC = () => {
             placeholder="搜索需求或技能..."
             placeholderClass={styles.searchPlaceholder}
             value={searchText}
+            confirmType="search"
             onInput={(e) => setSearchText(e.detail.value)}
           />
         </View>
@@ -124,13 +129,15 @@ const SquarePage: React.FC = () => {
           </View>
         </View>
 
-        {filteredDemands.map(demand => (
-          <DemandCard
-            key={demand.id}
-            data={demand}
-            onClick={() => handleDemandClick(demand)}
-          />
-        ))}
+        <ScrollView scrollY enhanced showScrollbar={false}>
+          {filteredDemands.map(demand => (
+            <DemandCard
+              key={demand.id}
+              data={demand}
+              onClick={() => handleDemandClick(demand)}
+            />
+          ))}
+        </ScrollView>
       </View>
 
       <View className={styles.fabButton} onClick={handlePublish}>

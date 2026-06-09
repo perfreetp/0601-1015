@@ -220,6 +220,83 @@
   }
 }
 
+.imageBubble {
+  padding: $spacing-xs !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  .mine & {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+.imageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.messageImage {
+  width: 360rpx;
+  max-width: 100%;
+  border-radius: $radius-md;
+  display: block;
+}
+
+.imageMineText {
+  color: $color-text-tertiary !important;
+  align-self: flex-end;
+}
+
+.voiceBubble {
+  display: flex;
+  align-items: center;
+  min-width: 200rpx;
+  padding: $spacing-xs 0;
+}
+
+.voiceIcon {
+  font-size: 36rpx;
+  margin-right: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.voiceText {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+
+  .mine & {
+    color: $color-text-white;
+  }
+}
+
+.locationBubble {
+  display: flex;
+  align-items: flex-start;
+  min-width: 240rpx;
+  padding: $spacing-xs 0;
+}
+
+.locationIcon {
+  font-size: 32rpx;
+  margin-right: $spacing-sm;
+  margin-top: 4rpx;
+  flex-shrink: 0;
+}
+
+.locationText {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  flex: 1;
+
+  .mine & {
+    color: $color-text-white;
+  }
+}
+
 .inputBar {
   display: flex;
   align-items: center;
